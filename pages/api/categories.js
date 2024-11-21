@@ -6,35 +6,59 @@ export default async function handle(req, res) {
   await mongooseConnect();
 
   if (method === "GET") {
+    // Fetch all categories, including parent category details
     res.json(await Category.find().populate("parent"));
   }
 
   if (method === "POST") {
-    const { name, parentCategory, properties } = req.body;
-    const categoryDoc = await Category.create({
-      name,
-      parent: parentCategory || undefined,
-      properties,
-    });
-    res.json(categoryDoc);
+    try {
+      const { name_ge, name_en, name_ru, parentCategory, properties } = req.body;
+      console.log(req.body);
+      const categoryDoc = await Category.create({
+        name_ge,
+        name_en,
+        name_ru,
+        parent: parentCategory || undefined,
+        properties,
+      });
+      res.json(categoryDoc);
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "Failed to create category", details: error.message });
+    }
   }
 
   if (method === "PUT") {
-    const { name, parentCategory, properties, _id } = req.body;
-    const categoryDoc = await Category.updateOne(
-      { _id },
-      {
-        name,
-        parent: parentCategory || undefined,
-        properties,
-      }
-    );
-    res.json(categoryDoc);
+    try {
+      const { name_ge, name_en, name_ru, parentCategory, properties, _id } = req.body;
+      const categoryDoc = await Category.updateOne(
+        { _id },
+        {
+          name_ge,
+          name_en,
+          name_ru,
+          parent: parentCategory || undefined,
+          properties,
+        }
+      );
+      res.json(categoryDoc);
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "Failed to update category", details: error.message });
+    }
   }
 
   if (method === "DELETE") {
-    const { _id } = req.query;
-    await Category.deleteOne({ _id });
-    res.json("ok");
+    try {
+      const { _id } = req.query;
+      await Category.deleteOne({ _id });
+      res.json({ message: "Category deleted successfully" });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "Failed to delete category", details: error.message });
+    }
   }
 }

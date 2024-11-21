@@ -22,8 +22,10 @@ export default async function handle(req, res) {
     const {
       title_ge,
       title_en,
+      title_ru,
       description_en,
       description_ge,
+      description_ru,
       price,
       images,
       category,
@@ -33,7 +35,9 @@ export default async function handle(req, res) {
     const productDoc = await Product.create({
       title_ge,
       title_en,
+      title_ru,
       description_en,
+      description_ru,
       description_ge,
       price,
       images,
@@ -47,9 +51,11 @@ export default async function handle(req, res) {
     // Update an existing product
     const {
       title_ge,
+      title_ru,
       title_en,
       description_ge,
       description_en,
+      description_ru,
       price,
       images,
       category,
@@ -62,7 +68,9 @@ export default async function handle(req, res) {
       {
         title_ge,
         title_en,
+        title_ru,
         description_ge,
+        description_ru,
         description_en,
         price,
         images,

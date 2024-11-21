@@ -8,8 +8,10 @@ export default function ProductForm({
   _id,
   title_ge: existingTitleGe,
   title_en: existingTitleEn,
+  title_ru: existingTitleRu,
   description_ge: existingDescriptionGe,
   description_en: existingDescriptionEn,
+  description_ru: existingDescriptionRu,
   price: existingPrice,
   images: existingImages,
   category: assignedCategory,
@@ -17,11 +19,15 @@ export default function ProductForm({
 }) {
   const [title_ge, setTitleGe] = useState(existingTitleGe || "");
   const [title_en, setTitleEn] = useState(existingTitleEn || "");
+  const [title_ru, setTitleRu] = useState(existingTitleRu || "");
   const [description_ge, setDescriptionGe] = useState(
     existingDescriptionGe || ""
   );
   const [description_en, setDescriptionEn] = useState(
     existingDescriptionEn || ""
+  );
+  const [description_ru, setDescriptionRu] = useState(
+    existingDescriptionRu || ""
   );
   const [category, setCategory] = useState(assignedCategory || "");
   const [productProperties, setProductProperties] = useState(
@@ -45,8 +51,10 @@ export default function ProductForm({
     const data = {
       title_ge,
       title_en,
+      title_ru,
       description_ge,
       description_en,
+      description_ru,
       price,
       images,
       category,
@@ -96,17 +104,6 @@ export default function ProductForm({
   }
 
   const propertiesToFill = [];
-  // if (categories.length > 0 && category) {
-  //   let catInfo = categories.find(({ _id }) => _id === category);
-  //   propertiesToFill.push(...catInfo.properties);
-  //   while (catInfo?.parent?._id) {
-  //     const parentCat = categories.find(
-  //       ({ _id }) => _id === catInfo?.parent?._id
-  //     );
-  //     propertiesToFill.push(...parentCat.properties);
-  //     catInfo = parentCat;
-  //   }
-  // }
 
   return (
     <form onSubmit={saveProduct}>
@@ -124,6 +121,13 @@ export default function ProductForm({
         value={title_en}
         onChange={(ev) => setTitleEn(ev.target.value)}
       />
+      <label>Product name (Russian)</label>
+      <input
+        type="text"
+        placeholder="product name (russian)"
+        value={title_ru}
+        onChange={(ev) => setTitleRu(ev.target.value)}
+      />
 
       <label>Category</label>
       <select value={category} onChange={(ev) => setCategory(ev.target.value)}>
@@ -131,7 +135,7 @@ export default function ProductForm({
         {categories.length > 0 &&
           categories.map((c) => (
             <option key={c._id} value={c._id}>
-              {c.name}
+              {c.name_en}
             </option>
           ))}
       </select>
@@ -209,6 +213,13 @@ export default function ProductForm({
         placeholder="description (english)"
         value={description_en}
         onChange={(ev) => setDescriptionEn(ev.target.value)}
+      />
+
+      <label>Description (Russian)</label>
+      <textarea
+        placeholder="description (russian)"
+        value={description_ru}
+        onChange={(ev) => setDescriptionRu(ev.target.value)}
       />
 
       <label>Price (in USD)</label>

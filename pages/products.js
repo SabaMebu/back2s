@@ -5,15 +5,17 @@ import axios from "axios";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+
   useEffect(() => {
     axios.get("/api/products").then((response) => {
       setProducts(response.data);
     });
   }, []);
+
   return (
     <Layout>
       <Link
-        className="bg-blue-900 text-white rounded-md  py-1 px-2"
+        className="bg-blue-900 text-white rounded-md py-1 px-2"
         href={"/products/new"}
       >
         Add new product
@@ -21,15 +23,22 @@ export default function Products() {
       <table className="basic mt-2">
         <thead>
           <tr>
-            <td>Product name</td>
-            <td></td>
+            <td>Product Name (Georgian)</td>
+            <td>Product Name (English)</td>
+            <td>Product Name (Russian)</td>
+            <td>Actions</td>
           </tr>
         </thead>
         <tbody>
           {products.map((product) => (
             <tr key={product._id}>
-              <td>{product.title}</td>
+              {/* Display title_ge */}
+              <td>{product.title_ge || "N/A"}</td>
+              {/* Display title_en */}
+              <td>{product.title_en || "N/A"}</td>
+              <td>{product.title_ru || "N/A"}</td>
               <td>
+                {/* Edit button */}
                 <Link
                   className="btn-default"
                   href={"/products/edit/" + product._id}
@@ -50,6 +59,7 @@ export default function Products() {
                   </svg>
                   Edit
                 </Link>
+                {/* Delete button */}
                 <Link
                   className="btn-red"
                   href={"/products/delete/" + product._id}
